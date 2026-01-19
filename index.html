@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🦇 BatSignal</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header class="nav">
+      <div class="brand">🦇 batsignal</div>
+      <nav class="links">
+        <a href="#services">services</a>
+        <a href="#pricing">pricing</a>
+        <a href="#book">book</a>
+      </nav>
+    </header>
+
+    <main class="wrap">
+      <section class="hero">
+        <div class="hero-text">
+          <h1>🦇 need help? send the batsignal.</h1>
+          <p>
+            fast, discreet, reliable help for day-to-day missions.
+            errands • setup • fixes • anything reasonable.
+          </p>
+
+          <div class="cta">
+            <a class="btn" id="waTop" href="#">whatsapp batman</a>
+            <a class="btn ghost" href="#book">book a slot</a>
+          </div>
+
+          <div class="badges">
+            <span>⚡ quick response</span>
+            <span>🕵️ discreet</span>
+            <span>✅ verified</span>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <h3>how booking works</h3>
+          <div class="pill">pick service → pick slot → booking confirmed</div>
+          <ul>
+  <li>choose service + time</li>
+  <li>instant whatsapp confirmation</li>
+  <li>transparent pricing</li>
+</ul>
+        </div>
+      </section>
+
+      <section id="services" class="section">
+        <h2>🦇 what we do</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>errands + deliveries</h3>
+            <p>pickups, dropoffs, queue standing, quick runs.</p>
+          </article>
+          <article class="card">
+            <h3>home setup</h3>
+            <p>wifi, smart devices, tv/furniture basics.</p>
+          </article>
+          <article class="card">
+            <h3>fix & coordinate</h3>
+            <p>book pros, manage visits, troubleshoot small stuff.</p>
+          </article>
+          <article class="card">
+            <h3>event help</h3>
+            <p>setup, vendor coordination, last-minute runs.</p>
+          </article>
+          <article class="card">
+            <h3>office support</h3>
+            <p>hardware setup, admin tasks, on-site assistance.</p>
+          </article>
+          <article class="card">
+            <h3>custom mission</h3>
+            <p>tell us what you need, if it's legal and safe we'll do it.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="pricing" class="section">
+        <h2>🦇 pricing</h2>
+        <div class="pricing-grid">
+          <div class="price-card">
+            <h3>basic</h3>
+            <p class="price">₹499<span>/hour</span></p>
+            <ul>
+              <li>errands + runs</li>
+              <li>basic help</li>
+              <li>chat support</li>
+            </ul>
+          </div>
+
+          <div class="price-card featured">
+            <h3>pro</h3>
+            <p class="price">₹899<span>/hour</span></p>
+            <ul>
+              <li>priority response</li>
+              <li>home/office setup</li>
+              <li>coordination included</li>
+            </ul>
+          </div>
+
+          <div class="price-card">
+            <h3>night ops</h3>
+            <p class="price">₹1299<span>/hour</span></p>
+            <ul>
+              <li>after-hours available</li>
+              <li>premium support</li>
+              <li>rush bookings</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="book" class="section">
+        <h2>🦇 book batman</h2>
+        <p class="muted">
+          choose a service + date + time. booking confirmed.
+        </p>
+        <form class=\"form\" id=\"bookingForm\" action=\"https://formspree.io/f/xgooyayd\" method=\"POST\">
+          <div class=\"row\">
+            <label>
+              your secret identity
+              <input type=\"text\" id=\"name\" placeholder=\"preferably not your actual name\" required />
+            </label>
+
+            <label>
+              email (in case it all goes sideways)
+              <input type=\"email\" id=\"email\" placeholder=\"recovery.email@definitely.real\" required />
+            </label>
+          </div>
+
+          <div class="row">
+            <label>
+              emergency hotline
+              <input type=\"tel\" id=\"phone\" placeholder=\"+91... (please be real)\" required />
+            </label>
+
+            <label>
+              service
+              <select id=\"service\" name=\"service\" required>
+           <option value=\"\" selected disabled>choose a service</option>
+           <option value=\"errands\">errands + deliveries</option>
+           <option value=\"home\">home setup (wifi/tv/furniture)</option>
+           <option value=\"fix\">fix & coordinate (book pros/manage visits)</option>
+           <option value=\"event\">event help</option>
+           <option value=\"office\">office support</option>
+           <option value=\"custom\">custom mission</option>
+</select>
+            </label>
+          </div>
+
+          <div class="row">
+            <label>
+              date
+              <div class="date-picker-wrapper">
+                <input type="text" id="date" placeholder="click to select date" readonly required />
+                <div class="calendar-popup" id="calendarPopup" style="display: none;">
+                  <div class="calendar-header">
+                    <button type="button" class="calendar-nav" id="prevMonth">←</button>
+                    <h3 id="monthYear"></h3>
+                    <button type="button" class="calendar-nav" id="nextMonth">→</button>
+                  </div>
+                  <div class="calendar-weekdays">
+                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                  </div>
+                  <div class="calendar-days" id="calendarDays"></div>
+                </div>
+              </div>
+            </label>
+
+            <label>
+              mission time
+              <select id=\"time\" required>
+                <option value=\"\" selected disabled>select time</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="row">
+            <label>
+              duration
+              <select id="duration" name="duration" required>
+                <option value=\"\" selected disabled>mission duration</option>
+                <option value=\"1\">1 hour</option>
+                <option value=\"2\">2 hours</option>
+                <option value=\"3\">3 hours</option>
+                <option value=\"4\">half-night (4 hrs)</option>
+                <option value=\"8\">full-night (8 hrs)</option>
+              </select>
+            </label>
+
+            <label>
+              location (drop zone)
+              <input type=\"text\" id=\"location\" placeholder=\"gotham sector / landmark\" required />
+            </label>
+          </div>
+
+          <label>
+            notes (optional)
+            <textarea id="notes" rows="3" placeholder="any extra details?"></textarea>
+          </label>
+
+          <div class=\"summary\">
+            <div>
+              <div class="k">slot status</div>
+              <div class="v" id="slotText">pick a date + time</div>
+            </div>
+          </div>
+
+          <button class="btn full" type="submit" id="submitBtn">whatsapp batman</button>
+          <p id="status" class="status"></p>
+        </form>
+      </section>
+
+      <footer class="footer">
+        <p>© <span id="year"></span> batsignal.</p>
+      </footer>
+    </main>
+
+    <!-- modal -->
+    <div class="modal" id="modal" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true">
+        <h3>confirm booking</h3>
+        <p class="muted" id="confirmText"></p>
+        <div class="modal-actions">
+          <button class="btn ghost" id="cancelBtn" type="button">cancel</button>
+          <button class="btn" id="confirmBtn" type="button">open whatsapp</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
