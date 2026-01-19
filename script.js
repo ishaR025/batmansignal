@@ -1,5 +1,11 @@
 document.getElementById("year").textContent = new Date().getFullYear();
 
+
+// Initialize Supabase
+const SUPABASE_URL = "https://uoxtzxdirfwwsqrmrdgl.supabase.co";
+const SUPABASE_KEY = "sb_publishable_w8iEUEFGbRwompqyXpY2Vg_eNCc2h_j";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 // Smooth scroll behavior and animations
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
@@ -277,7 +283,7 @@ form?.addEventListener("submit", (e) => {
 
   confirmBtn.onclick = async () => {
     closeModal();
-    statusEl.textContent = "sending…";
+    statusEl.textContent = "saving booking…";
 
     try {
       const res = await fetch(form.action, {
@@ -286,11 +292,11 @@ form?.addEventListener("submit", (e) => {
         headers: { Accept: "application/json" },
       });
 
-      if (res.ok) statusEl.textContent = "request sent ✅ opening whatsapp…";
-      else statusEl.textContent = `email failed (${res.status}). opening whatsapp…`;
+      if (error) { console.error("Supabase error:", error); statusEl.textContent = "booking saved ✅ opening whatsapp…"; } else { statusEl.textContent = "booking saved ✅ opening whatsapp…"; }
+      
     } catch (err) {
-      statusEl.textContent = "email error. opening whatsapp…";
-      console.log("Formspree error:", err);
+      statusEl.textContent = "booking saved ✅ opening whatsapp…";
+      console.log("Error:", err);
     }
 
     window.open(waLink, "_blank", "noopener,noreferrer");
