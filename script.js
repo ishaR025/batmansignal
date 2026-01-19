@@ -66,40 +66,49 @@ const WA_NUMBER = "919804340701";
 let currentDate = new Date();
 let selectedDate = null;
 
-const dateInput = document.getElementById("date");
-const calendarPopup = document.getElementById("calendarPopup");
-const monthYear = document.getElementById("monthYear");
-const calendarDays = document.getElementById("calendarDays");
-const prevMonth = document.getElementById("prevMonth");
-const nextMonth = document.getElementById("nextMonth");
+let dateInput, calendarPopup, monthYear, calendarDays, prevMonth, nextMonth;
 
-// Setup event listeners if elements exist
-if (dateInput && calendarPopup) {
-  dateInput.addEventListener("click", () => {
-    calendarPopup.style.display = calendarPopup.style.display === "none" ? "block" : "none";
+function setupCalendarClickHandlers() {
+  if (!dateInput) return;
+
+  dateInput.addEventListener("click", function(e) {
+    e.stopPropagation();
+    console.log("Date input clicked");
+    const display = calendarPopup.style.display;
+    calendarPopup.style.display = (display === "none" || display === "") ? "block" : "none";
     if (calendarPopup.style.display === "block") {
       renderCalendar();
     }
   });
 
-  prevMonth.addEventListener("click", (e) => {
-    e.preventDefault();
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    renderCalendar();
-  });
+  if (prevMonth) {
+    prevMonth.addEventListener("click", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      currentDate.setMonth(currentDate.getMonth() - 1);
+      renderCalendar();
+    });
+  }
 
-  nextMonth.addEventListener("click", (e) => {
-    e.preventDefault();
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    renderCalendar();
-  });
+  if (nextMonth) {
+    nextMonth.addEventListener("click", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      currentDate.setMonth(currentDate.getMonth() + 1);
+      renderCalendar();
+    });
+  }
 
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest(".date-picker-wrapper")) {
+  document.addEventListener("click", function(e) {
+    const wrapper = document.querySelector(".date-picker-wrapper");
+    if (wrapper && !wrapper.contains(e.target)) {
       calendarPopup.style.display = "none";
     }
   });
+
+  console.log("Calendar click handlers setup complete");
 }
+
 
 function initCalendar() {
   const today = new Date();
@@ -332,6 +341,18 @@ document.getElementById("date")?.addEventListener("change", () => {
 document.getElementById("time")?.addEventListener("change", updateSlotStatus);
 
 // initial
+dateInput = document.getElementById("date");
+calendarPopup = document.getElementById("calendarPopup");
+monthYear = document.getElementById("monthYear");
+calendarDays = document.getElementById("calendarDays");
+prevMonth = document.getElementById("prevMonth");
+nextMonth = document.getElementById("nextMonth");
+
+console.log("DOM Elements:", { dateInput, calendarPopup, monthYear, calendarDays });
+
+setupCalendarClickHandlers();
 initCalendar();
 fillTimes();
 updateSlotStatus();
+
+console.log("Initialization complete");
