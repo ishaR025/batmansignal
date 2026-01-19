@@ -1,6 +1,5 @@
 document.getElementById("year").textContent = new Date().getFullYear();
 
-
 // Initialize Supabase
 const SUPABASE_URL = "https://uoxtzxdirfwwsqrmrdgl.supabase.co";
 const SUPABASE_KEY = "sb_publishable_w8iEUEFGbRwompqyXpY2Vg_eNCc2h_j";
@@ -67,12 +66,51 @@ const WA_NUMBER = "919804340701";
 let currentDate = new Date();
 let selectedDate = null;
 
-const dateInput = document.getElementById("date");
-const calendarPopup = document.getElementById("calendarPopup");
-const monthYear = document.getElementById("monthYear");
-const calendarDays = document.getElementById("calendarDays");
-const prevMonth = document.getElementById("prevMonth");
-const nextMonth = document.getElementById("nextMonth");
+let dateInput, calendarPopup, monthYear, calendarDays, prevMonth, nextMonth;
+
+function initializeCalendarElements() {
+  dateInput = document.getElementById("date");
+  calendarPopup = document.getElementById("calendarPopup");
+  monthYear = document.getElementById("monthYear");
+  calendarDays = document.getElementById("calendarDays");
+  prevMonth = document.getElementById("prevMonth");
+  nextMonth = document.getElementById("nextMonth");
+  
+  if (!dateInput || !calendarPopup) {
+    console.warn("Calendar elements not found");
+    return;
+  }
+  
+  setupCalendarListeners();
+}
+
+function setupCalendarListeners() {
+  dateInput.addEventListener("click", (e) => {
+    e.stopPropagation();
+    calendarPopup.style.display = calendarPopup.style.display === "none" ? "block" : "none";
+    if (calendarPopup.style.display === "block") {
+      renderCalendar();
+    }
+  });
+
+  prevMonth.addEventListener("click", (e) => {
+    e.preventDefault();
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
+  });
+
+  nextMonth.addEventListener("click", (e) => {
+    e.preventDefault();
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".date-picker-wrapper")) {
+      calendarPopup.style.display = "none";
+    }
+  });
+}
 
 function initCalendar() {
   const today = new Date();
@@ -107,7 +145,7 @@ function renderCalendar() {
     const isOtherMonth = currentCell.getMonth() !== month;
     const isDisabled = currentCell < today;
     const isSelected = selectedDate && 
-                       currentCell.toDateString() === new Date(selectedDate).toDateString();
+                       currentCell.toDateString() === selectedDate.toDateString();
     const isToday = currentCell.toDateString() === today.toDateString();
     
     if (isOtherMonth) day.classList.add("other-month");
@@ -116,7 +154,7 @@ function renderCalendar() {
     if (isToday) day.classList.add("today");
     
     if (!isDisabled && !isOtherMonth) {
-      day.addEventListener("click", () => selectDate(new Date(currentCell)));
+      day.addEventListener("click", () => selectDate(new Date(currentCell.getTime())));
     }
     
     calendarDays.appendChild(day);
@@ -133,31 +171,6 @@ function selectDate(date) {
   fillTimes();
   updateSlotStatus();
 }
-
-dateInput.addEventListener("click", () => {
-  calendarPopup.style.display = calendarPopup.style.display === "none" ? "block" : "none";
-  if (calendarPopup.style.display === "block") {
-    renderCalendar();
-  }
-});
-
-prevMonth.addEventListener("click", (e) => {
-  e.preventDefault();
-  currentDate.setMonth(currentDate.getMonth() - 1);
-  renderCalendar();
-});
-
-nextMonth.addEventListener("click", (e) => {
-  e.preventDefault();
-  currentDate.setMonth(currentDate.getMonth() + 1);
-  renderCalendar();
-});
-
-document.addEventListener("click", (e) => {
-  if (!e.target.closest(".date-picker-wrapper")) {
-    calendarPopup.style.display = "none";
-  }
-});
 
 // simple fixed time slots (no weekday/weekend logic)
 const TIMES = [
@@ -286,14 +299,29 @@ form?.addEventListener("submit", (e) => {
     statusEl.textContent = "saving booking…";
 
     try {
-      const res = await fetch(form.action, {
-        method: "POST",
-        body: new FormData(form),
-        headers: { Accept: "application/json" },
-      });
+      // Save to Supabase
+      const { data, error } = await supabase
+        .from("bookings")
+        .insert([
+          {
+            service: serviceLabel,
+            date: dateVal,
+            time: timeVal,
+            duration: durationLabel,
+            location: location,
+            name: name,
+            phone: phone,
+            email: email,
+            custom_mission: notes
+          }
+        ]);
 
-      if (error) { console.error("Supabase error:", error); statusEl.textContent = "booking saved ✅ opening whatsapp…"; } else { statusEl.textContent = "booking saved ✅ opening whatsapp…"; }
-      
+      if (error) {
+        console.error("Supabase error:", error);
+        statusEl.textContent = "booking saved ✅ opening whatsapp…";
+      } else {
+        statusEl.textContent = "booking saved ✅ opening whatsapp…";
+      }
     } catch (err) {
       statusEl.textContent = "booking saved ✅ opening whatsapp…";
       console.log("Error:", err);
@@ -315,6 +343,21 @@ document.getElementById("date")?.addEventListener("change", () => {
 document.getElementById("time")?.addEventListener("change", updateSlotStatus);
 
 // initial
-initCalendar();
-fillTimes();
-updateSlotStatus();
+console.log("Script loaded, document state:", document.readyState);
+
+function doInit() {
+  console.log("Initializing...");
+  initializeCalendarElements();
+  initCalendar();
+  fillTimes();
+  updateSlotStatus();
+  console.log("Initialization complete");
+}
+
+if (document.readyState === "loading") {
+  console.log("DOM still loading, waiting for DOMContentLoaded");
+  document.addEventListener("DOMContentLoaded", doInit);
+} else {
+  console.log("DOM already loaded");
+  doInit();
+}
