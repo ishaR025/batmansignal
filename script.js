@@ -66,27 +66,16 @@ const WA_NUMBER = "919804340701";
 let currentDate = new Date();
 let selectedDate = null;
 
-let dateInput, calendarPopup, monthYear, calendarDays, prevMonth, nextMonth;
+const dateInput = document.getElementById("date");
+const calendarPopup = document.getElementById("calendarPopup");
+const monthYear = document.getElementById("monthYear");
+const calendarDays = document.getElementById("calendarDays");
+const prevMonth = document.getElementById("prevMonth");
+const nextMonth = document.getElementById("nextMonth");
 
-function initializeCalendarElements() {
-  dateInput = document.getElementById("date");
-  calendarPopup = document.getElementById("calendarPopup");
-  monthYear = document.getElementById("monthYear");
-  calendarDays = document.getElementById("calendarDays");
-  prevMonth = document.getElementById("prevMonth");
-  nextMonth = document.getElementById("nextMonth");
-  
-  if (!dateInput || !calendarPopup) {
-    console.warn("Calendar elements not found");
-    return;
-  }
-  
-  setupCalendarListeners();
-}
-
-function setupCalendarListeners() {
-  dateInput.addEventListener("click", (e) => {
-    e.stopPropagation();
+// Setup event listeners if elements exist
+if (dateInput && calendarPopup) {
+  dateInput.addEventListener("click", () => {
     calendarPopup.style.display = calendarPopup.style.display === "none" ? "block" : "none";
     if (calendarPopup.style.display === "block") {
       renderCalendar();
@@ -343,21 +332,6 @@ document.getElementById("date")?.addEventListener("change", () => {
 document.getElementById("time")?.addEventListener("change", updateSlotStatus);
 
 // initial
-console.log("Script loaded, document state:", document.readyState);
-
-function doInit() {
-  console.log("Initializing...");
-  initializeCalendarElements();
-  initCalendar();
-  fillTimes();
-  updateSlotStatus();
-  console.log("Initialization complete");
-}
-
-if (document.readyState === "loading") {
-  console.log("DOM still loading, waiting for DOMContentLoaded");
-  document.addEventListener("DOMContentLoaded", doInit);
-} else {
-  console.log("DOM already loaded");
-  doInit();
-}
+initCalendar();
+fillTimes();
+updateSlotStatus();
