@@ -120,62 +120,74 @@
         <p class="muted">
           choose a service + date + time. booking confirmed.
         </p>
-        <form class=\"form\" id=\"bookingForm\" action=\"https://formspree.io/f/xgooyayd\" method=\"POST\">
-          <div class=\"row\">
+        <form class="form" id="bookingForm" action="https://formspree.io/f/xgooyayd" method="POST">
+          <div class="row">
             <label>
               your secret identity
-              <input type=\"text\" id=\"name\" placeholder=\"preferably not your actual name\" required />
+              <input type="text" id="name" placeholder="preferably not your actual name" required />
             </label>
 
             <label>
               email (in case it all goes sideways)
-              <input type=\"email\" id=\"email\" placeholder=\"recovery.email@definitely.real\" required />
+              <input type="email" id="email" placeholder="recovery.email@definitely.real" required />
             </label>
           </div>
 
           <div class="row">
             <label>
               emergency hotline
-              <input type=\"tel\" id=\"phone\" placeholder=\"+91... (please be real)\" required />
+              <input type="tel" id="phone" placeholder="+91... (please be real)" required />
             </label>
 
             <label>
               service
-              <select id=\"service\" name=\"service\" required>
-           <option value=\"\" selected disabled>choose a service</option>
-           <option value=\"errands\">errands + deliveries</option>
-           <option value=\"home\">home setup (wifi/tv/furniture)</option>
-           <option value=\"fix\">fix & coordinate (book pros/manage visits)</option>
-           <option value=\"event\">event help</option>
-           <option value=\"office\">office support</option>
-           <option value=\"custom\">custom mission</option>
+              <select id="service" name="service" required>
+           <option value="" selected disabled>choose a service</option>
+           <option value="errands">errands + deliveries</option>
+           <option value="home">home setup (wifi/tv/furniture)</option>
+           <option value="fix">fix & coordinate (book pros/manage visits)</option>
+           <option value="event">event help</option>
+           <option value="office">office support</option>
+           <option value="custom">custom mission</option>
 </select>
             </label>
           </div>
 
           <div class="row">
-            <label>
-              date
-              <div class="date-picker-wrapper">
-                <input type="text" id="date" placeholder="click to select date" readonly required />
-                <div class="calendar-popup" id="calendarPopup" style="display: none;">
-                  <div class="calendar-header">
-                    <button type="button" class="calendar-nav" id="prevMonth">←</button>
-                    <h3 id="monthYear"></h3>
-                    <button type="button" class="calendar-nav" id="nextMonth">→</button>
-                  </div>
-                  <div class="calendar-weekdays">
-                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-                  </div>
-                  <div class="calendar-days" id="calendarDays"></div>
-                </div>
-              </div>
-            </label>
+           <label>
+  date
+  <div class="date-picker-wrapper">
+    <input
+      type="text"
+      id="date"
+      name="date_display"
+      placeholder="click to select date"
+      readonly
+      required
+    />
+    <input type="hidden" id="dateValue" name="date" />
+
+    <div class="calendar-popup" id="calendarPopup" style="display: none;">
+      <div class="calendar-header">
+        <button type="button" class="calendar-nav" id="prevMonth">←</button>
+        <h3 id="monthYear"></h3>
+        <button type="button" class="calendar-nav" id="nextMonth">→</button>
+      </div>
+
+      <div class="calendar-weekdays">
+        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+      </div>
+
+      <div class="calendar-days" id="calendarDays"></div>
+    </div>
+  </div>
+</label>
+
 
             <label>
               mission time
-              <select id=\"time\" required>
-                <option value=\"\" selected disabled>select time</option>
+              <select id="time" required>
+                <option value="" selected disabled>select time</option>
               </select>
             </label>
           </div>
@@ -184,18 +196,18 @@
             <label>
               duration
               <select id="duration" name="duration" required>
-                <option value=\"\" selected disabled>mission duration</option>
-                <option value=\"1\">1 hour</option>
-                <option value=\"2\">2 hours</option>
-                <option value=\"3\">3 hours</option>
-                <option value=\"4\">half-night (4 hrs)</option>
-                <option value=\"8\">full-night (8 hrs)</option>
+                <option value="" selected disabled>mission duration</option>
+                <option value="1">1 hour</option>
+                <option value="2">2 hours</option>
+                <option value="3">3 hours</option>
+                <option value="4">half-night (4 hrs)</option>
+                <option value="8">full-night (8 hrs)</option>
               </select>
             </label>
 
             <label>
               location (drop zone)
-              <input type=\"text\" id=\"location\" placeholder=\"gotham sector / landmark\" required />
+              <input type="text" id="location" placeholder="gotham sector / landmark" required />
             </label>
           </div>
 
@@ -204,7 +216,7 @@
             <textarea id="notes" rows="3" placeholder="any extra details?"></textarea>
           </label>
 
-          <div class=\"summary\">
+          <div class="summary">
             <div>
               <div class="k">slot status</div>
               <div class="v" id="slotText">pick a date + time</div>

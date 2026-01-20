@@ -118,6 +118,11 @@ function initCalendar() {
 }
 
 function renderCalendar() {
+  if (!monthYear || !calendarDays) {
+    console.error("Calendar elements not found");
+    return;
+  }
+  
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   
@@ -165,6 +170,7 @@ function selectDate(date) {
   const dateStr = date.toISOString().split("T")[0];
   dateInput.value = date.toLocaleDateString("en-IN", { weekday: "short", year: "numeric", month: "short", day: "numeric" });
   dateInput.dataset.value = dateStr;
+  document.getElementById("dateValue").value = dateStr;
   calendarPopup.style.display = "none";
   fillTimes();
   updateSlotStatus();
@@ -196,7 +202,7 @@ if (waTop) {
 
 // Populate time dropdown when date is selected
 function fillTimes() {
-  const dateVal = document.getElementById("date")?.dataset.value;
+  const dateVal = document.getElementById("dateValue")?.value || document.getElementById("date")?.dataset.value;
   const timeSelect = document.getElementById("time");
   if (!timeSelect) return;
 
@@ -340,19 +346,42 @@ document.getElementById("date")?.addEventListener("change", () => {
 });
 document.getElementById("time")?.addEventListener("change", updateSlotStatus);
 
-// initial
-dateInput = document.getElementById("date");
-calendarPopup = document.getElementById("calendarPopup");
-monthYear = document.getElementById("monthYear");
-calendarDays = document.getElementById("calendarDays");
-prevMonth = document.getElementById("prevMonth");
-nextMonth = document.getElementById("nextMonth");
+// Ensure DOM is ready before initialization
+document.addEventListener("DOMContentLoaded", function() {
+  // initial
+  dateInput = document.getElementById("date");
+  calendarPopup = document.getElementById("calendarPopup");
+  monthYear = document.getElementById("monthYear");
+  calendarDays = document.getElementById("calendarDays");
+  prevMonth = document.getElementById("prevMonth");
+  nextMonth = document.getElementById("nextMonth");
 
-console.log("DOM Elements:", { dateInput, calendarPopup, monthYear, calendarDays });
+  console.log("DOM Elements:", { dateInput, calendarPopup, monthYear, calendarDays });
 
-setupCalendarClickHandlers();
-initCalendar();
-fillTimes();
-updateSlotStatus();
+  setupCalendarClickHandlers();
+  initCalendar();
+  fillTimes();
+  updateSlotStatus();
 
-console.log("Initialization complete");
+  console.log("Initialization complete");
+});
+
+// If script loads after DOMContentLoaded (when loaded async or deferred)
+if (document.readyState !== "loading") {
+  // initial
+  dateInput = document.getElementById("date");
+  calendarPopup = document.getElementById("calendarPopup");
+  monthYear = document.getElementById("monthYear");
+  calendarDays = document.getElementById("calendarDays");
+  prevMonth = document.getElementById("prevMonth");
+  nextMonth = document.getElementById("nextMonth");
+
+  console.log("DOM Elements (already loaded):", { dateInput, calendarPopup, monthYear, calendarDays });
+
+  setupCalendarClickHandlers();
+  initCalendar();
+  fillTimes();
+  updateSlotStatus();
+
+  console.log("Initialization complete");
+}
