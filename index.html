@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>🦇 BatSignal</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦇</text></svg>" />
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   </head>
@@ -11,7 +12,10 @@
   <body>
     <header class="nav">
       <div class="brand">🦇 batsignal</div>
-      <nav class="links">
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="links" id="navLinks">
         <a href="#services">services</a>
         <a href="#pricing">pricing</a>
         <a href="#book">book</a>
@@ -43,10 +47,10 @@
           <h3>how booking works</h3>
           <div class="pill">pick service → pick slot → booking confirmed</div>
           <ul>
-  <li>choose service + time</li>
-  <li>instant whatsapp confirmation</li>
-  <li>transparent pricing</li>
-</ul>
+            <li>choose service + time</li>
+            <li>instant whatsapp confirmation</li>
+            <li>transparent pricing</li>
+          </ul>
         </div>
       </section>
 
@@ -94,6 +98,7 @@
           </div>
 
           <div class="price-card featured">
+            <span class="badge">most popular</span>
             <h3>pro</h3>
             <p class="price">₹899<span>/hour</span></p>
             <ul>
@@ -117,77 +122,75 @@
 
       <section id="book" class="section">
         <h2>🦇 book batman</h2>
-        <p class="muted">
-          choose a service + date + time. booking confirmed.
-        </p>
-        <form class="form" id="bookingForm" action="https://formspree.io/f/xgooyayd" method="POST">
+        <p class="muted">choose a service + date + time. booking confirmed.</p>
+
+        <form class="form" id="bookingForm" action="https://formspree.io/f/xgooyayd" method="POST" novalidate>
           <div class="row">
             <label>
               your secret identity
-              <input type="text" id="name" placeholder="preferably not your actual name" required />
+              <input type="text" id="name" name="name" placeholder="preferably not your actual name" required />
             </label>
 
             <label>
               email (in case it all goes sideways)
-              <input type="email" id="email" placeholder="recovery.email@definitely.real" required />
+              <input type="email" id="email" name="email" placeholder="recovery.email@definitely.real" required />
             </label>
           </div>
 
           <div class="row">
             <label>
               emergency hotline
-              <input type="tel" id="phone" placeholder="+91... (please be real)" required />
+              <input type="tel" id="phone" name="phone" placeholder="+91... (please be real)" required />
             </label>
 
             <label>
               service
               <select id="service" name="service" required>
-           <option value="" selected disabled>choose a service</option>
-           <option value="errands">errands + deliveries</option>
-           <option value="home">home setup (wifi/tv/furniture)</option>
-           <option value="fix">fix & coordinate (book pros/manage visits)</option>
-           <option value="event">event help</option>
-           <option value="office">office support</option>
-           <option value="custom">custom mission</option>
-</select>
+                <option value="" selected disabled>choose a service</option>
+                <option value="errands">errands + deliveries</option>
+                <option value="home">home setup (wifi/tv/furniture)</option>
+                <option value="fix">fix & coordinate (book pros/manage visits)</option>
+                <option value="event">event help</option>
+                <option value="office">office support</option>
+                <option value="custom">custom mission</option>
+              </select>
             </label>
           </div>
 
           <div class="row">
-           <label>
-  date
-  <div class="date-picker-wrapper">
-    <input
-      type="text"
-      id="date"
-      name="date_display"
-      placeholder="click to select date"
-      readonly
-      required
-    />
-    <input type="hidden" id="dateValue" name="date" />
+            <label>
+              date
+              <div class="date-picker-wrapper">
+                <input
+  type="text"
+  id="date"
+  name="date_display"
+  placeholder="click to select date"
+  readonly
+/>
+<input type="hidden" id="dateValue" name="date" />
 
-    <div class="calendar-popup" id="calendarPopup" style="display: none;">
-      <div class="calendar-header">
-        <button type="button" class="calendar-nav" id="prevMonth">←</button>
-        <h3 id="monthYear"></h3>
-        <button type="button" class="calendar-nav" id="nextMonth">→</button>
-      </div>
 
-      <div class="calendar-weekdays">
-        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-      </div>
+                <div class="calendar-popup" id="calendarPopup">
+                  <div class="calendar-header">
+                    <button type="button" class="calendar-nav" id="prevMonth">←</button>
+                    <h3 id="monthYear"></h3>
+                    <button type="button" class="calendar-nav" id="nextMonth">→</button>
+                  </div>
 
-      <div class="calendar-days" id="calendarDays"></div>
-    </div>
-  </div>
-</label>
+                  <div class="calendar-weekdays">
+                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                  </div>
 
+                  <div class="calendar-days" id="calendarDays"></div>
+                </div>
+              </div>
+            </label>
 
             <label>
               mission time
-              <select id="time" required>
-                <option value="" selected disabled>select time</option>
+              <select id="time" name="time" required>
+                <option value="" selected disabled>pick a date first</option>
               </select>
             </label>
           </div>
@@ -207,13 +210,13 @@
 
             <label>
               location (drop zone)
-              <input type="text" id="location" placeholder="gotham sector / landmark" required />
+              <input type="text" id="location" name="location" placeholder="gotham sector / landmark" required />
             </label>
           </div>
 
           <label>
             notes (optional)
-            <textarea id="notes" rows="3" placeholder="any extra details?"></textarea>
+            <textarea id="notes" name="notes" rows="3" placeholder="any extra details?"></textarea>
           </label>
 
           <div class="summary">
@@ -233,7 +236,6 @@
       </footer>
     </main>
 
-    <!-- modal -->
     <div class="modal" id="modal" aria-hidden="true">
       <div class="modal-card" role="dialog" aria-modal="true">
         <h3>confirm booking</h3>
